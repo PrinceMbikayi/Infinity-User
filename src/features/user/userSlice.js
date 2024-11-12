@@ -36,6 +36,7 @@ export const getUserProductWishlist = createAsyncThunk(
 export const addProdToCart = createAsyncThunk(
   "user/cart/add",
   async (cartData,thunkAPI) => {
+    console.log('cartData',cartData)
     try {
       return await authService.addToCart(cartData);
     } catch (error) {
@@ -229,6 +230,7 @@ export const authSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.cartProducts = action.payload;
+        console.log('action.payload',action.payload)
        
       }).addCase(getUserCart.rejected, (state, action) => {
         state.isLoading = false;

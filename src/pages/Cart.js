@@ -7,7 +7,13 @@ import { Link } from "react-router-dom";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteCartProduct, getUserCart, updateCartProduct } from "../features/user/userSlice";
+import { base_url,config } from "../utils/axiosConfig";
+import { loadStripe } from '@stripe/stripe-js';
+import { toast } from "react-toastify";
+import axios from "axios";
 const Cart = () => {
+  const stripePromise = loadStripe('pk_test_51PLbOjRx1MID7VUPEYdxUvLTSBWMjTjoIfG8pEU6FP93a2Os19t7DAAtYcp3E0KKLYspyqhZUzNdwYQeHoOtojwO00e56rZMMj');
+
   const dispatch = useDispatch();
   const [prodctUpdateDetail, setProdctUpdateDetail] = useState(null)
   const [totalAmount, setTotalAmount] = useState(null)
@@ -38,6 +44,49 @@ const Cart = () => {
     }
   }, [userCartState])
 
+  console.log(prodctUpdateDetail)
+
+  const handleCheckout = async () => {
+    // Prepare the data to send to the backend
+
+    const cartItems =userCartState.map((item)=> {
+      return{
+        productId: item?.productId._id,
+        quantity: item?.quantity,
+      }
+    })
+    
+    
+    
+    
+  
+
+    try {
+      // Create Checkout Session by calling your backend
+      const response = await axios.post(
+        `${base_url}payments/create-checkout-session`,
+        { products: cartItems },
+        config // Pass your config object here
+      );
+    
+      const { sessionId } = response.data;
+
+      // Redirect to Stripe Checkout
+      const stripe = await stripePromise;
+      const { error } = await stripe.redirectToCheckout({
+        sessionId,
+      });
+
+      if (error) {
+        console.error('Stripe Checkout Error:', error);
+        toast.error('Unable to redirect to Stripe Checkout.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Payment initiation failed. Please try again.');
+    }
+  };
+
   return (
     <>
       <Meta title={"Cart"} />
@@ -59,11 +108,22 @@ const Cart = () => {
                       <img src={item?.productId?.images[0]?.url} className="img-fluid" alt="product image" />
                     </div>
                     <div className="w-75">
-                      <p>{item?.productId.title}</p>
+                      <p>{item?.productId?.title}</p>
 
-                      <p className="d-flex gap-3">Color: <ul className="colors ps-0">
+                      <p className="d-flex gap-3">Color:
+                         <ul className="colors ps-0">
                         <li style={{ backgroundColor: item?.color.title }}></li>
-                      </ul></p>
+                      </ul>
+                      </p>
+                      <p>
+                      <span
+                     className={`badge border border-1 cursor-pointer ${
+                       'bg-white text-dark border-secondary'
+                     }`}
+                   >
+                     {item?.diskSize}
+                   </span>
+                      </p>
                     </div>
                   </div>
                   <div className="cart-col-2">
@@ -96,7 +156,7 @@ const Cart = () => {
           </div>
           <div className="col-12 py-2 mt-4">
             <div className="d-flex justify-content-between align-items-baseline">
-              <Link to="/product" className="button">
+              <Link to="/" className="button">
                 Continue To Shopping
               </Link>
               {
@@ -104,9 +164,9 @@ const Cart = () => {
                 <div className="d-flex flex-column align-items-end">
                   <h4>SubTotal: $ {totalAmount}</h4>
                   <p>Taxes and shipping calculated at checkout</p>
-                  <Link to="/checkout" className="button">
+                  <div onClick={handleCheckout} className="button">
                     Checkout
-                  </Link>
+                  </div>
                 </div>
               }
             </div>

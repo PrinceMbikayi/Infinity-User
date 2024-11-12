@@ -249,14 +249,14 @@ const Home = () => {
                       </div>
                       <div className="product-image">
                         <img
-                          src={item?.images[0].url}
+                          src={item?.images?.[0]?.url||""}
                           className="img-fluid  mx-auto"
                           alt="product image"
                           width={250}
                           height={250}
                         />
                         <img
-                          src={item?.images[1].url}
+                          src={item?.images?.[1]?.url||""}
                           className="img-fluid  mx-auto"
                           alt="product image"
                           width={250}
@@ -414,20 +414,23 @@ const Home = () => {
                         </button>
                       </div>
                       <div className="product-image">
-                        <img
-                          src={item?.images[0].url}
+                        {item?.images?.[0].url&&  <img
+                          src={item?.images?.[0]?.url}
                           className="img-fluid  mx-auto"
                           alt="product image"
                           width={250}
                           height={250}
-                        />
-                        <img
-                          src={item?.images[1].url}
+                        />}
+
+                        {item?.images?.[1].url &&  <img
+                          src={item?.images?.[1]?.url}
                           className="img-fluid  mx-auto"
                           alt="product image"
                           width={250}
                           height={250}
-                        />
+                        />}
+                      
+                      
                       </div>
                       <div className="product-details">
                         <h6 className="brand">{item?.brand}</h6>

@@ -23,6 +23,7 @@ const getUserWislist = async () => {
 };
 const addToCart = async (cartData) => {
   const response = await axios.post(`${base_url}user/cart`,cartData, config);
+  console.log('addToCart',response.data)
   if (response.data) {
     return response.data;
   }
