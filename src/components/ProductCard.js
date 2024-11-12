@@ -51,7 +51,7 @@ const ProductCard = (props) => {
                   height={250}
                 />
                 <img
-                  src={item?.images[1].url}
+                  src={item?.images && item.images[1]?.url ? item.images[1].url : 'images/default.jpg'}
                   className="img-fluid  mx-auto"
                   alt="product image"
                   width={250}
