@@ -1,0 +1,263 @@
+/* eBay-inspired Signup Page Styles */
+.ebay-signup-container {
+  min-height: 100vh;
+  background-color: #f7f7f7;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.ebay-signup-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+
+
+/* Main Content */
+.ebay-signup-content {
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  max-width: 1000px;
+  margin: 40px auto 0;
+  padding-top: 40px;
+}
+
+.ebay-signup-card {
+  background: white;
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  max-width: 500px;
+}
+
+.ebay-signup-title {
+  font-size: 32px;
+  font-weight: 400;
+  color: #333;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+
+.ebay-signup-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 32px 0;
+  line-height: 1.4;
+}
+
+.ebay-login-link {
+  color: #0654ba;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.ebay-login-link:hover {
+  text-decoration: underline;
+}
+
+/* Form Styles */
+.ebay-signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.ebay-form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.ebay-form-row .ebay-form-group {
+  flex: 1;
+}
+
+.ebay-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ebay-form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.ebay-form-input {
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  transition: border-color 0.2s ease;
+}
+
+.ebay-form-input:focus {
+  outline: none;
+  border-color: #0654ba;
+  box-shadow: 0 0 0 2px rgba(6, 84, 186, 0.1);
+}
+
+.ebay-form-input.error {
+  border-color: #e53e3e;
+}
+
+.ebay-error-message {
+  color: #e53e3e;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.ebay-password-hint {
+  color: #666;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.ebay-terms-section {
+  margin: 8px 0;
+}
+
+.ebay-terms-text {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.ebay-terms-link {
+  color: #0654ba;
+  text-decoration: none;
+}
+
+.ebay-terms-link:hover {
+  text-decoration: underline;
+}
+
+.ebay-signup-button {
+  background-color: #0654ba;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 8px;
+}
+
+.ebay-signup-button:hover {
+  background-color: #054494;
+}
+
+.ebay-signup-button:active {
+  background-color: #043a7a;
+}
+
+/* Benefits Section */
+.ebay-benefits-section {
+  flex: 1;
+  max-width: 350px;
+  padding: 20px 0;
+}
+
+.ebay-benefits-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 24px 0;
+}
+
+.ebay-benefits-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.ebay-benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.ebay-benefit-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.ebay-benefit-item strong {
+  display: block;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.ebay-benefit-item p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .ebay-signup-content {
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .ebay-signup-card {
+    max-width: 100%;
+    padding: 30px 20px;
+  }
+  
+  .ebay-benefits-section {
+    max-width: 100%;
+    order: -1;
+  }
+  
+  .ebay-signup-wrapper {
+    padding: 0 16px;
+  }
+  
+  .ebay-signup-content {
+    margin-top: 20px;
+    padding-top: 20px;
+  }
+  
+  .ebay-form-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ebay-signup-card {
+    padding: 24px 16px;
+  }
+  
+  .ebay-signup-title {
+    font-size: 28px;
+  }
+  
+  .ebay-form-input {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .ebay-benefit-item {
+    gap: 12px;
+  }
+  
+  .ebay-benefit-icon {
+    font-size: 20px;
+  }
+}

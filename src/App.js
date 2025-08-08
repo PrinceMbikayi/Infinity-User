@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
+import "./styles/responsive.css";
+import "./styles/components.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
@@ -25,10 +27,23 @@ import { PrivateRoutes } from "./routing/PrivateRoutes";
 import { OpenRoutes } from "./routing/OpenRoutes";
 import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
+import Promotions from "./pages/Promotions";
+import FAQ from "./pages/FAQ";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserProfile } from "./features/user/userSlice";
 
 
 
 function App() {
+  const dispatch = useDispatch();
+  const userState = useSelector((state) => state?.auth?.user);
+
+  useEffect(() => {
+    // Récupérer le profil utilisateur au démarrage si un utilisateur est connecté
+    if (userState && userState._id) {
+      dispatch(getUserProfile());
+    }
+  }, [dispatch, userState?._id]);
   
   return (
     <>
@@ -48,6 +63,8 @@ function App() {
             <Route path="checkout" element={<PrivateRoutes><Checkout /></PrivateRoutes>} />
             <Route path="compare-product" element={<CompareProduct />} />
             <Route path="wishlist" element={<PrivateRoutes><Wishlist /></PrivateRoutes>} />
+            <Route path="promotions" element={<Promotions />} />
+            <Route path="faq" element={<FAQ />} />
             <Route path="login" element={<OpenRoutes><Login /></OpenRoutes>} />
             <Route path="forgot-password" element={<Forgotpassword />} />
             <Route path="signup" element={<OpenRoutes><Signup /></OpenRoutes>} />

@@ -11,56 +11,147 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import watch from "../images/watch.jpg";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
-import { addRating, getAProduct, getAllProducts } from "../features/products/productSlice";
+import {
+  addRating,
+  getAProduct,
+  getAllProducts,
+} from "../features/products/productSlice";
 import { toast } from "react-toastify";
 import { addProdToCart, getUserCart } from "../features/user/userSlice";
+import { base_url, config } from "../utils/axiosConfig";
+import { loadStripe } from '@stripe/stripe-js';
+import axios from "axios";
+import "./SingleProduct.css";
+
 const SingleProduct = () => {
-  const [color, setColor] = useState(null)
-  const [quantity, setQuantity] = useState(1)
-  const [alreadyAdded, setAlreadyAdded] = useState(false)
+  const stripePromise = loadStripe('pk_test_51PLbOjRx1MID7VUPEYdxUvLTSBWMjTjoIfG8pEU6FP93a2Os19t7DAAtYcp3E0KKLYspyqhZUzNdwYQeHoOtojwO00e56rZMMj');
+  
+  const [color, setColor] = useState(null);
+  const [selectedColorData, setSelectedColorData] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [alreadyAdded, setAlreadyAdded] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const location = useLocation();
-  const navigate = useNavigate()
-  const getProductId = location.pathname.split("/")[2]
+  const navigate = useNavigate();
+  const getProductId = location.pathname.split("/")[2];
   const dispatch = useDispatch();
-  const productState = useSelector(state => state?.product?.singleproduct)
-  const productsState = useSelector(state => state?.product?.product)
-  const cartState = useSelector(state => state?.auth?.cartProducts)
-  const [selectedSize,setSelectedSize] = useState('')
+  const productState = useSelector((state) => state?.product?.singleproduct);
+  const productsState = useSelector((state) => state?.product?.product);
+  const cartState = useSelector((state) => state?.auth?.cartProducts);
+  const [selectedSize, setSelectedSize] = useState("");
 
   useEffect(() => {
-    dispatch(getAProduct(getProductId))
-    dispatch(getUserCart())
-    dispatch(getAllProducts())
-
-  }, [])
+    dispatch(getAProduct(getProductId));
+    dispatch(getUserCart());
+    dispatch(getAllProducts());
+  }, []);
   useEffect(() => {
     for (let index = 0; index < cartState?.length; index++) {
       if (getProductId === cartState[index]?.productId?._id) {
-        setAlreadyAdded(true)
+        setAlreadyAdded(true);
       }
     }
-  }, [])
+  }, []);
+
+  // Fonction pour gérer le changement de couleur
+  const handleColorChange = (colorId) => {
+    setColor(colorId);
+    // Trouver les données de la couleur sélectionnée
+    const colorData = productState?.color?.find(c => c._id === colorId);
+    setSelectedColorData(colorData);
+    
+    // Simuler le changement d'image basé sur la couleur
+    // En réalité, vous devriez avoir des images spécifiques pour chaque couleur
+    if (productState?.images && productState.images.length > 1) {
+      const colorIndex = productState.color?.findIndex(c => c._id === colorId);
+      if (colorIndex !== -1 && colorIndex < productState.images.length) {
+        setCurrentImageIndex(colorIndex);
+      }
+    }
+  };
+
+  // Fonction pour gérer le changement de taille
+  const handleSizeChange = (size) => {
+    setSelectedSize(size);
+    // Ici vous pouvez ajouter la logique pour changer le produit selon la taille
+    // si vous avez des produits différents pour chaque taille
+  };
 
   const uploadCart = () => {
     if (color === null) {
-      toast.error("Please Choose Color")
-      return false
+      toast.error("Please Choose Color");
+      return false;
     }
     if (!selectedSize) {
-      toast.error("Please Choose Size")
-      return false
+      toast.error("Please Choose Size");
+      return false;
+    } else {
+      dispatch(
+        addProdToCart({
+          productId: productState?._id,
+          quantity,
+          color,
+          price: productState?.price,
+          image: productState?.images[0]?.url,
+          diskSize: selectedSize,
+        })
+      );
+      navigate("/cart");
     }
-    else {
-      dispatch(addProdToCart({ productId: productState?._id, quantity, color, price: productState?.price, image: productState?.images[0]?.url,diskSize:selectedSize }))
-      navigate('/cart')
+  };
+
+  const handleBuyNow = async () => {
+    // Vérifier que la couleur et la taille sont sélectionnées
+    if (color === null) {
+      toast.error("Please Choose Color");
+      return false;
     }
-  }
+    if (!selectedSize) {
+      toast.error("Please Choose Size");
+      return false;
+    }
+
+    // Préparer les données du produit pour le paiement direct
+    const cartItems = [{
+      productId: productState?._id,
+      quantity: parseInt(quantity),
+    }];
+
+    try {
+      // Créer une session de checkout en appelant le backend
+      const response = await axios.post(
+        `${base_url}payments/create-checkout-session`,
+        { products: cartItems },
+        config
+      );
+    
+      const { sessionId } = response.data;
+
+      // Rediriger vers Stripe Checkout
+      const stripe = await stripePromise;
+      const { error } = await stripe.redirectToCheckout({
+        sessionId,
+      });
+
+      if (error) {
+        console.error('Stripe Checkout Error:', error);
+        toast.error('Unable to redirect to Stripe Checkout.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Payment initiation failed. Please try again.');
+    }
+  };
   const props = {
     width: 594,
     height: 600,
     zoomWidth: 600,
 
-    img: productState?.images[0]?.url ? productState?.images[0]?.url : "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg",
+    img: productState?.images[currentImageIndex]?.url
+      ? productState?.images[currentImageIndex]?.url
+      : productState?.images[0]?.url
+      ? productState?.images[0]?.url
+      : "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg",
   };
 
   const [orderedProduct, setorderedProduct] = useState(true);
@@ -73,227 +164,216 @@ const SingleProduct = () => {
     document.execCommand("copy");
     textField.remove();
   };
-  const closeModal = () => { };
-  const [popularProduct, setPopularProduct] = useState([])
+  const closeModal = () => {};
+  const [popularProduct, setPopularProduct] = useState([]);
   useEffect(() => {
-    let data = []
+    let data = [];
     for (let index = 0; index < productsState.length; index++) {
       const element = productsState[index];
-      if (element.tags === 'popular') {
-        data.push(element)
+      if (element.tags === "popular") {
+        data.push(element);
       }
-      setPopularProduct(data)
-
+      setPopularProduct(data);
     }
-  }, [productState])
+  }, [productState]);
   console.log(popularProduct);
 
-  const [star, setStar] = useState(null)
-  const [comment, setComment] = useState(null)
+  const [star, setStar] = useState(null);
+  const [comment, setComment] = useState(null);
   const addRatingToProduct = () => {
     if (star === null) {
-      toast.error("Please add star rating")
-      return false
+      toast.error("Please add star rating");
+      return false;
     } else if (comment === null) {
-      toast.error("Please Write Review About the Product.")
-      return false
+      toast.error("Please Write Review About the Product.");
+      return false;
     } else {
-      dispatch(addRating({ star: star, comment: comment, prodId: getProductId }))
+      dispatch(
+        addRating({ star: star, comment: comment, prodId: getProductId })
+      );
       setTimeout(() => {
-        dispatch(getAProduct(getProductId))
+        dispatch(getAProduct(getProductId));
       }, 100);
-
     }
-    return false
-
-  }
-
-
-
- 
-
+    return false;
+  };
 
   return (
     <>
       <Meta title={"Product Name"} />
       <BreadCrumb title={productState?.title} />
-      <Container class1="main-product-wrapper py-5 home-wrapper-2">
-        <div className="row">
-          <div className="col-6">
-            <div className="main-product-image">
-              <div>
+      <div className="amazon-product-wrapper">
+        <Container class1="amazon-product-container">
+          <div className="row">
+            <div className="col-12 col-lg-6 amazon-image-section">
+              <div className="amazon-main-image">
                 <ReactImageZoom {...props} />
               </div>
-            </div>
-            <div className="other-product-images d-flex flex-wrap gap-15">
-              {productState?.images.map((item, index) => {
-                return <div>
-                  <img
-                    src={item?.url}
-                    className="img-fluid"
-                    alt=""
-                  />
-                </div>
-              })}
-
-
-            </div>
-          </div>
-          <div className="col-6">
-            <div className="main-product-details">
-              <div className="border-bottom">
-                <h3 className="title">
-                  {productState?.title}
-                </h3>
+              <div className="amazon-thumbnail-gallery">
+                {productState?.images.map((item, index) => {
+                  return (
+                    <div 
+                      key={index} 
+                      className={`amazon-thumbnail ${currentImageIndex === index ? 'active' : ''}`}
+                      onClick={() => setCurrentImageIndex(index)}
+                    >
+                      <img src={item?.url} className="img-fluid" alt="" />
+                    </div>
+                  );
+                })}
               </div>
-              <div className="border-bottom py-3">
-                <p className="price">$ {productState?.price}</p>
-                <div className="d-flex align-items-center gap-10">
+            </div>
+            <div className="col-12 col-lg-6 amazon-info-section">
+              <div className="amazon-product-details">
+                <h1 className="amazon-product-title">{productState?.title}</h1>
+                
+                <div className="amazon-rating-section">
                   <ReactStars
                     count={5}
-                    size={24}
-                    value={productState?.totalratings}
+                    size={20}
+                    value={Number(productState?.totalratings) || 0}
                     edit={false}
                     activeColor="#ffd700"
                   />
-                  <p className="mb-0 t-review">( 2 Reviews )</p>
+                  <a className="amazon-rating-text" href="#review">
+                    ( 2 Reviews )
+                  </a>
                 </div>
-                <a className="review-btn" href="#review">
-                  Write a Review
-                </a>
-              </div>
-              <div className=" py-3">
-                <div className="d-flex gap-10 align-items-center my-2">
-                  <h3 className="product-heading">Type :</h3>
-                  <p className="product-data">Watch</p>
+                
+                <div className="amazon-price-section">
+                  <span className="amazon-price-currency">$</span>
+                  <span className="amazon-price">{productState?.price}</span>
                 </div>
-                <div className="d-flex gap-10 align-items-center my-2">
-                  <h3 className="product-heading">Brand :</h3>
-                  <p className="product-data">{productState?.brand}</p>
+              <div className="amazon-details-section">
+                  <div className="amazon-detail-row">
+                    <span className="amazon-detail-label">Type:</span>
+                    <span className="amazon-detail-value">Watch</span>
+                  </div>
+                  <div className="amazon-detail-row">
+                    <span className="amazon-detail-label">Brand:</span>
+                    <span className="amazon-detail-value">{productState?.brand}</span>
+                  </div>
+                  <div className="amazon-detail-row">
+                    <span className="amazon-detail-label">Category:</span>
+                    <span className="amazon-detail-value">{productState?.category}</span>
+                  </div>
+                  <div className="amazon-detail-row">
+                    <span className="amazon-detail-label">Tags:</span>
+                    <span className="amazon-detail-value">{productState?.tags}</span>
+                  </div>
+                  <div className="amazon-detail-row">
+                    <span className="amazon-detail-label">Availability:</span>
+                    <span className="amazon-detail-value">In Stock</span>
+                  </div>
                 </div>
-                <div className="d-flex gap-10 align-items-center my-2">
-                  <h3 className="product-heading">Category :</h3>
-                  <p className="product-data">{productState?.category}</p>
-                </div>
-                <div className="d-flex gap-10 align-items-center my-2">
-                  <h3 className="product-heading">Tags :</h3>
-                  <p className="product-data">{productState?.tags}</p>
-                </div>
-                <div className="d-flex gap-10 align-items-center my-2">
-                  <h3 className="product-heading">Availablity :</h3>
-                  <p className="product-data">In Stock</p>
-                </div>
-                <div className="d-flex gap-10 flex-column mt-2 mb-3">
-                  <h3 className="product-heading">Size :</h3>
-                  <div className="d-flex flex-wrap gap-15">
+                <div className="amazon-selection-section">
+                  <h3 className="amazon-selection-title">Taille:</h3>
+                  <div className="amazon-size-options">
                     {productState?.diskSizes.map((item, index) => (
-                      
-                     <span
-                     onClick={()=>setSelectedSize(item.size)}
-                     style={{cursor:'pointer'    }}
-                     key={index}
-                     className={`badge border border-1 cursor-pointer ${
-                       selectedSize===item.size ? 'bg-dark text-white' : 'bg-white text-dark border-secondary'
-                     }`}
-                   >
-                     {item.size}
-                   </span>
+                      <span
+                        onClick={() => handleSizeChange(item.size)}
+                        key={index}
+                        className={`amazon-size-option ${
+                          selectedSize === item.size ? "selected" : ""
+                        }`}
+                      >
+                        {item.size}
+                      </span>
                     ))}
-
-
                   </div>
                 </div>
-                {
-                  alreadyAdded === false && <>
-
-                    <div className="d-flex gap-10 flex-column mt-2 mb-3">
-                      <h3 className="product-heading">Color :</h3>
-                      <Color setColor={setColor} color={color} colorData={productState?.color} />
-                    </div></>
-                }
-                <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
-                  {
-                    alreadyAdded === false && <>
-                      <h3 className="product-heading">Quantity :</h3>
-                      <div className="">
-                        <input
-                          type="number"
-                          name=""
-                          min={1}
-                          max={10}
-                          className="form-control"
-                          style={{ width: "70px" }}
-                          id=""
-                          onChange={(e) => setQuantity(e.target.value)}
-                          value={quantity}
-                        />
+                {alreadyAdded === false && (
+                  <div className="amazon-selection-section amazon-color-section">
+                    <h3 className="amazon-selection-title">Couleur:</h3>
+                    {selectedColorData && (
+                      <div className="amazon-selected-color-info">
+                        <span className="amazon-color-name">Couleur sélectionnée: {selectedColorData.title}</span>
                       </div>
-                    </>
-                  }
-                  <div className={alreadyAdded ? "ms-0" : "ms-5" + 'd-flex align-items-center gap-30 ms-5'}>
-                    <button
-                      className="button border-0"
-                      /*  data-bs-toggle="modal"
-                       data-bs-target="#staticBackdrop" */
+                    )}
+                    <Color
+                      setColor={handleColorChange}
+                      color={color}
+                      colorData={productState?.color}
+                    />
+                  </div>
+                )}
+                {alreadyAdded === false && (
+                  <div className="amazon-quantity-section">
+                    <span className="amazon-quantity-label">Quantity:</span>
+                    <input
+                      type="number"
+                      min={1}
+                      max={10}
+                      className="amazon-quantity-input"
+                      onChange={(e) => setQuantity(e.target.value)}
+                      value={quantity}
+                    />
+                  </div>
+                )}
+                
+                <div className="amazon-actions-section">
+                  <button
+                    className="amazon-add-to-cart"
+                    type="button"
+                    onClick={() => {
+                      alreadyAdded ? navigate("/cart") : uploadCart();
+                    }}
+                  >
+                    {alreadyAdded ? "Go To Cart" : "Add to Cart"}
+                  </button>
+                  {!alreadyAdded && (
+                    <button 
+                      className="amazon-buy-now" 
                       type="button"
-                      onClick={() => { alreadyAdded ? navigate('/cart') : uploadCart() }}
-                      // onClick={handleCheckout}
-                    // Here should ba called stripe payment
+                      onClick={handleBuyNow}
                     >
-                      {alreadyAdded?"Go To Cart" :"Add to Cart"}
-                      
+                      Buy Now
                     </button>
-                    {/*  <button className="button signup">Buy It Now</button> */}
-                  </div>
+                  )}
                 </div>
-                <div className="d-flex align-items-center gap-15">
-                  <div>
-                    <a href="">
-                      <TbGitCompare className="fs-5 me-2" /> Add to Compare
-                    </a>
-                  </div>
-                  <div>
-                    <a href="">
-                      <AiOutlineHeart className="fs-5 me-2" /> Add to Wishlist
-                    </a>
-                  </div>
+                <div className="amazon-secondary-actions">
+                  <a href="" className="amazon-secondary-action">
+                    <TbGitCompare className="fs-5" /> Add to Compare
+                  </a>
+                  <a href="" className="amazon-secondary-action">
+                    <AiOutlineHeart className="fs-5" /> Add to Wishlist
+                  </a>
                 </div>
-                <div className="d-flex gap-10 flex-column  my-3">
-                  <h3 className="product-heading">Shipping & Returns :</h3>
-                  <p className="product-data">
-                    Free shipping and returns available on all orders! <br /> We
-                    ship all US domestic orders within
-                    <b>5-10 business days!</b>
+                <div className="amazon-delivery-section">
+                  <h3 className="amazon-delivery-title">Shipping & Returns</h3>
+                  <p className="amazon-delivery-info">
+                    <span className="amazon-delivery-highlight">Free shipping and returns</span> available on all orders!<br />
+                    We ship all US domestic orders within <span className="amazon-delivery-highlight">5-10 business days!</span>
                   </p>
                 </div>
-                <div className="d-flex gap-10 align-items-center my-3">
-                  <h3 className="product-heading">Product Link:</h3>
-                  <a
-                    href="javascript:void(0);"
+                
+                <div className="amazon-product-link">
+                  <div className="amazon-link-label">Product Link:</div>
+                  <button
+                    type="button"
+                    className="amazon-copy-link"
                     onClick={() => {
-                      copyToClipboard(
-                        window.location.href
-                      );
+                      copyToClipboard(window.location.href);
                     }}
                   >
                     Copy Product Link
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </Container>
-      <Container class1="description-wrapper py-5 home-wrapper-2">
+        </Container>
+      </div>
+      <Container class1="description-wrapper py-3 py-md-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">
             <h4>Description</h4>
             <div className="bg-white p-3">
-              <p dangerouslySetInnerHTML={{
-                __html: productState?.description
-              }}>
-
-              </p>
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: productState?.description,
+                }}
+              ></p>
             </div>
           </div>
         </div>
@@ -335,7 +415,7 @@ const SingleProduct = () => {
                     edit={true}
                     activeColor="#ffd700"
                     onChange={(e) => {
-                      setStar(e)
+                      setStar(e);
                     }}
                   />
                 </div>
@@ -348,36 +428,38 @@ const SingleProduct = () => {
                     rows="4"
                     placeholder="Comments"
                     onChange={(e) => {
-                      setComment(e.target.value)
+                      setComment(e.target.value);
                     }}
                   ></textarea>
                 </div>
                 <div className="d-flex justify-content-end mt-3">
-                  <button onClick={addRatingToProduct} className="button border-0" type="button">Submit Review</button>
+                  <button
+                    onClick={addRatingToProduct}
+                    className="button border-0"
+                    type="button"
+                  >
+                    Submit Review
+                  </button>
                 </div>
               </div>
               <div className="reviews mt-4">
-                {
-                  productState && productState.ratings?.map((item, index) => {
+                {productState &&
+                  productState.ratings?.map((item, index) => {
                     return (
                       <div key={index} className="review">
                         <div className="d-flex gap-10 align-items-center">
                           <ReactStars
                             count={5}
                             size={24}
-                            value={item?.star}
+                            value={Number(item?.star) || 0}
                             edit={false}
                             activeColor="#ffd700"
-
                           />
                         </div>
-                        <p className="mt-3">
-                          {item?.comment}
-                        </p>
+                        <p className="mt-3">{item?.comment}</p>
                       </div>
-                    )
-                  })
-                }
+                    );
+                  })}
               </div>
             </div>
           </div>
@@ -393,8 +475,6 @@ const SingleProduct = () => {
           <ProductCard data={popularProduct} />
         </div>
       </Container>
-
-
     </>
   );
 };

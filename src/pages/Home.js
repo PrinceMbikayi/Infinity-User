@@ -17,12 +17,14 @@ import watch2 from "../images/watch-1.avif";
 import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
 import { addToWishlist } from "../features/products/productSlice";
-import { base_url } from '../utils/axiosConfig'
+import { base_url } from "../utils/axiosConfig";
 import axios from "axios";
+import "./Home.css";
+
 const Home = () => {
   const blogState = useSelector((state) => state?.blog?.blog);
   const productState = useSelector((state) => state.product.product);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -30,10 +32,58 @@ const Home = () => {
     getallProducts();
   }, []);
 
-
   const [banners, setBanners] = React.useState([]);
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = React.useState(true);
 
-  console.log(banners)
+  console.log(banners);
+
+  // Slider data with fallback images
+  const sliderData =
+    banners.length > 0
+      ? banners
+      : [
+          {
+            id: 1,
+            image: "images/main-banner-1.jpg",
+            title: "Découvrez nos Nouveautés",
+            description:
+              "Une sélection exclusive de produits tendance pour vous",
+            cta: "Voir la Collection",
+          },
+          {
+            id: 2,
+            image:
+              "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
+            title: "Offres Spéciales",
+            description:
+              "Jusqu'à 50% de réduction sur une sélection de produits",
+            cta: "Profiter des Offres",
+          },
+          {
+            id: 3,
+            image: "images/main-banner.jpg",
+            title: "Livraison Gratuite",
+            description: "Profitez de la livraison gratuite dès 50$ d'achat",
+            cta: "Commander Maintenant",
+          },
+        ];
+
+  // Slider navigation functions
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % sliderData.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide(
+      (prev) => (prev - 1 + sliderData.length) % sliderData.length
+    );
+  };
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
+
   useEffect(() => {
     const fetchBanners = async () => {
       try {
@@ -46,6 +96,21 @@ const Home = () => {
 
     fetchBanners();
   }, []);
+
+  // Auto-play effect
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, currentSlide]);
+
+  // Pause auto-play on hover
+  const handleMouseEnter = () => setIsAutoPlaying(false);
+  const handleMouseLeave = () => setIsAutoPlaying(true);
   const getblogs = () => {
     dispatch(getAllBlogs());
   };
@@ -58,245 +123,125 @@ const Home = () => {
   };
   return (
     <>
-      <Container class1="home-wrapper-1 py-5">
-        <div className="row">
-          <div className="col-6">
-            <div className="main-banner position-relative ">
-              <img
-                src={banners[0]?.image || "images/main-banner-1.jpg"}
-                className="img-fluid rounded-3"
-                alt="main banner"
-                style={{ width: '100%' }}
+      {/* Hero Banner Slider - eBay Inspired */}
+      <section
+        className="hero-slider-section"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="hero-slider">
+          <div className="slider-container">
+            {sliderData.map((slide, index) => (
+              <div
+                key={slide.id}
+                className={`slider-slide ${
+                  index === currentSlide ? "active" : ""
+                }`}
+                style={{ backgroundImage: `url(${slide.image})` }}
+              >
+                <div className="slide-overlay">
+                  <div className="slide-content">
+                    <h1 className="slide-title">{slide.title}</h1>
+                    <p className="slide-description">{slide.description}</p>
+                    <Link to="/product" className="slide-cta">
+                      {slide.cta}
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Navigation Buttons */}
+          <button className="slider-nav prev" onClick={prevSlide}>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
               />
-              <div className="main-banner-content position-absolute">
-                <h4>SUPERCHARGED FOR PROS.</h4>
-                <h5>iPad S13+ Pro.</h5>
-                <p>From $999.00 or $41.62/mo.</p>
-                <Link className="button">BUY NOW</Link>
-              </div>
-            </div>
-          </div>
-          <div className="col-6">
-            <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
-              {banners.length ? banners?.slice(1).map((item, index) => <div key={item.id} className="small-banner position-relative">
-                <img
-                  src={item?.image || "images/catbanner-01.jpg"}
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
-                <div className="small-banner-content position-absolute">
-                  <h4>Best Sake</h4>
-                  <h5>iPad S13+ Pro.</h5>
-                  <p>
-                    From $999.00 <br /> or $41.62/mo.
-                  </p>
-                </div>
-              </div>) : <>
-                <div className="small-banner position-relative">
-                  <img
-                    src="images/catbanner-02.jpg"
-                    className="img-fluid rounded-3"
-                    alt="main banner"
-                  />
-                  <div className="small-banner-content position-absolute">
-                    <h4>NEW ARRIVAL</h4>
-                    <h5>But IPad Air</h5>
-                    <p>
-                      From $999.00 <br /> or $41.62/mo.
-                    </p>
-                  </div>
-                </div>
-                <div className="small-banner position-relative ">
-                  <img
-                    src="images/catbanner-03.jpg"
-                    className="img-fluid rounded-3"
-                    alt="main banner"
-                  />
-                  <div className="small-banner-content position-absolute">
-                    <h4>NEW ARRIVAL</h4>
-                    <h5>But IPad Air</h5>
-                    <p>
-                      From $999.00 <br /> or $41.62/mo.
-                    </p>
-                  </div>
-                </div>
-                <div className="small-banner position-relative ">
-                  <img
-                    src="images/catbanner-04.jpg"
-                    className="img-fluid rounded-3"
-                    alt="main banner"
-                  />
-                  <div className="small-banner-content position-absolute">
-                    <h4>NEW ARRIVAL</h4>
-                    <h5>But IPad Air</h5>
-                    <p>
-                      From $999.00 <br /> or $41.62/mo.
-                    </p>
-                  </div>
-                </div>
-              </>}
+            </svg>
+          </button>
+          <button className="slider-nav next" onClick={nextSlide}>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
 
-
-            </div>
+          {/* Indicators */}
+          <div className="slider-indicators">
+            {sliderData.map((_, index) => (
+              <button
+                key={index}
+                className={`indicator ${
+                  index === currentSlide ? "active" : ""
+                }`}
+                onClick={() => goToSlide(index)}
+              ></button>
+            ))}
           </div>
         </div>
-      </Container>
-      <Container class1="home-wrapper-2 py-5">
-        <div className="row">
-          <div className="col-12">
-            <div className="servies d-flex align-items-center justify-content-between">
-              {services?.map((i, j) => {
-                return (
-                  <div className="d-flex align-items-center gap-15" key={j}>
-                    <img src={i.image} alt="services" />
-                    <div>
-                      <h6>{i.title}</h6>
-                      <p className="mb-0">{i.tagline}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </Container>
-      {/*   <Container class1="home-wrapper-2 py-5">
-        <div className="row">
-          <div className="col-12">
-            <div className="categories d-flex justify-content-between flex-wrap align-items-center">
-              <div className="d-flex gap align-items-center">
-                <div>
-                  <h6>Music & Gaming</h6>
-                  <p>10 Items</p>
-                </div>
-                <img src="images/camera.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap align-items-center">
-                <div>
-                  <h6>Cameras</h6>
-                  <p>10 Items</p>
-                </div>
-                <img src="images/camera.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap align-items-center">
-                <div>
-                  <h6>Smart Tv</h6>
-                  <p>10 Items</p>
-                </div>
-                <img src="images/tv.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap align-items-center">
-                <div>
-                  <h6>Smart Watches</h6>
-                  <p>10 Items</p>
-                </div>
-                <img src="images/headphone.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap align-items-center">
-                <div>
-                  <h6>Music & Gaming</h6>
-                  <p>10 Items</p>
-                </div>
-                <img src="images/camera.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap align-items-center">
-                <div>
-                  <h6>Cameras</h6>
-                  <p>10 Items</p>
-                </div>
-                <img src="images/camera.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap align-items-center">
-                <div>
-                  <h6>Smart Tv</h6>
-                  <p>10 Items</p>
-                </div>
-                <img src="images/tv.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap align-items-center">
-                <div>
-                  <h6>Smart Watches</h6>
-                  <p>10 Items</p>
-                </div>
-                <img src="images/headphone.jpg" alt="camera" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </Container> */}
-      <Container class1="featured-wrapper py-5 home-wrapper-2">
-        <div className="row">
-          <div className="col-12">
-            <h3 className="section-heading">Featured Collection</h3>
-          </div>
-          {productState &&
-            productState?.map((item, index) => {
-              if (item.tags === "featured") {
-                return (
-                  <div key={index} className={"col-3"}>
-                    <div
-
-                      className="product-card position-relative"
-                    >
-                      <div className="wishlist-icon position-absolute">
-                        <button className="border-0 bg-transparent">
-                          <img
-                            onClick={() => addToWish(item?._id)}
-                            src={wish}
-                            alt="wishlist"
-                          />
-                        </button>
-                      </div>
-                      <div className="product-image">
+      </section>
+      {/* Services Section */}
+      <section className="services-section bg-white py-5">
+        <Container class1="">
+          <div className="row">
+            <div className="col-12">
+              <div className="services-grid">
+                {services?.map((service, index) => {
+                  return (
+                    <div className="service-item modern-card" key={index}>
+                      <div className="service-icon">
                         <img
-                          src={item?.images?.[0]?.url||""}
-                          className="img-fluid  mx-auto"
-                          alt="product image"
-                          width={250}
-                          height={250}
-                        />
-                        <img
-                          src={item?.images?.[1]?.url||""}
-                          className="img-fluid  mx-auto"
-                          alt="product image"
-                          width={250}
-                          height={150}
+                          src={service.image}
+                          alt={service.title}
+                          className="w-8 h-8"
                         />
                       </div>
-                      <div className="product-details">
-                        <h6 className="brand">{item?.brand}</h6>
-                        <h5 className="product-title">{item?.title}</h5>
-                        <ReactStars
-                          count={5}
-                          size={24}
-                          value={item?.totalrating.toString()}
-                          edit={false}
-                          activeColor="#ffd700"
-                        />
-
-                        <p className="price">$ {item?.price}</p>
-                      </div>
-                      <div className="action-bar position-absolute">
-                        <div className="d-flex flex-column gap-15">
-                          {/*  <button className="border-0 bg-transparent">
-                            <img src={prodcompare} alt="compare" />
-                          </button> */}
-                          <button className="border-0 bg-transparent">
-                            <img onClick={() => navigate("/product/" + item?._id)} src={view} alt="view" />
-                          </button>
-                          {/*   <button className="border-0 bg-transparent">
-                            <img src={addcart} alt="addcart" />
-                          </button> */}
-                        </div>
+                      <div className="service-content">
+                        <h4 className="service-title">{service.title}</h4>
+                        <p className="service-description">{service.tagline}</p>
                       </div>
                     </div>
-                  </div>
-                );
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Featured Products Section */}
+      <section className="featured-section bg-gray-50 py-5">
+        <Container class1="">
+          <div className="row">
+            <div className="col-12">
+              <div className="section-header">
+                <h2 className="section-title">Collection Vedette</h2>
+                <p className="section-subtitle">
+                  Découvrez nos produits les plus populaires
+                </p>
+              </div>
+            </div>
+            <ProductCard
+              data={
+                Array.isArray(productState)
+                  ? productState
+                      .filter((item) => item.tags === "featured")
+                      .slice(0, 8)
+                  : []
               }
-            })}
-        </div>
-      </Container>
-
+              grid={3}
+            />
+          </div>
+        </Container>
+      </section>
       <Container class1="famous-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-3">
@@ -361,7 +306,6 @@ const Home = () => {
           </div>
         </div>
       </Container>
-
       <Container class1="special-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">
@@ -389,6 +333,7 @@ const Home = () => {
             })}
         </div>
       </Container>
+
       <Container class1="popular-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">
@@ -402,7 +347,8 @@ const Home = () => {
                 return (
                   <div key={index} className={"col-3"}>
                     <div
-                      className="product-card position-relative"
+                      className="product-card position-relative cursor-pointer"
+                      onClick={() => navigate("/product/" + item?._id)}
                     >
                       <div className="wishlist-icon position-absolute">
                         <button className="border-0 bg-transparent">
@@ -414,23 +360,25 @@ const Home = () => {
                         </button>
                       </div>
                       <div className="product-image">
-                        {item?.images?.[0].url&&  <img
-                          src={item?.images?.[0]?.url}
-                          className="img-fluid  mx-auto"
-                          alt="product image"
-                          width={250}
-                          height={250}
-                        />}
+                        {item?.images?.[0].url && (
+                          <img
+                            src={item?.images?.[0]?.url}
+                            className="img-fluid  mx-auto"
+                            alt="product image"
+                            width={250}
+                            height={250}
+                          />
+                        )}
 
-                        {item?.images?.[1].url &&  <img
-                          src={item?.images?.[1]?.url}
-                          className="img-fluid  mx-auto"
-                          alt="product image"
-                          width={250}
-                          height={250}
-                        />}
-                      
-                      
+                        {item?.images?.[1].url && (
+                          <img
+                            src={item?.images?.[1]?.url}
+                            className="img-fluid  mx-auto"
+                            alt="product image"
+                            width={250}
+                            height={250}
+                          />
+                        )}
                       </div>
                       <div className="product-details">
                         <h6 className="brand">{item?.brand}</h6>
@@ -447,16 +395,13 @@ const Home = () => {
                       </div>
                       <div className="action-bar position-absolute">
                         <div className="d-flex flex-column gap-15">
-                          {/*  <button className="border-0 bg-transparent">
-                            <img src={prodcompare} alt="compare" />
-                          </button> */}
                           <button className="border-0 bg-transparent">
-
-                            <img onClick={() => navigate("/product/" + item?._id)} src={view} alt="view" />
+                            <img
+                              onClick={() => navigate("/product/" + item?._id)}
+                              src={view}
+                              alt="view"
+                            />
                           </button>
-                          {/*  <button className="border-0 bg-transparent">
-                            <img src={addcart} alt="addcart" />
-                          </button> */}
                         </div>
                       </div>
                     </div>
@@ -500,13 +445,7 @@ const Home = () => {
           </div>
         </div>
       </Container>
-
       <Container class1="blog-wrapper py-5 home-wrapper-2">
-        <div className="row">
-          <div className="col-12">
-            <h3 className="section-heading">Our Latest Blogs</h3>
-          </div>
-        </div>
         <div className="row">
           {blogState &&
             blogState?.map((item, index) => {

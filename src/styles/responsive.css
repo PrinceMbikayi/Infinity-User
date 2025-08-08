@@ -1,0 +1,597 @@
+/* ========================================
+   RESPONSIVE DESIGN - INFINITY E-COMMERCE
+   ======================================== */
+
+/* Variables pour les breakpoints */
+:root {
+  --desktop-large: 1200px;
+  --desktop: 992px;
+  --tablet: 768px;
+  --mobile-large: 576px;
+  --mobile: 480px;
+  --mobile-small: 320px;
+}
+
+/* ========================================
+   DESKTOP LARGE (1200px+)
+   ======================================== */
+@media (min-width: 1200px) {
+  .container-xxl {
+    max-width: 1140px;
+  }
+  
+  .section-heading {
+    font-size: 32px;
+    line-height: 40px;
+  }
+  
+  .card-wrapper {
+    padding: 20px;
+  }
+}
+
+/* ========================================
+   DESKTOP (992px - 1199px)
+   ======================================== */
+@media (max-width: 1199px) and (min-width: 992px) {
+  .container-xxl {
+    max-width: 960px;
+  }
+  
+  .section-heading {
+    font-size: 28px;
+    line-height: 36px;
+  }
+  
+  /* Header adjustments */
+  .header-upper-links {
+    gap: 10px;
+  }
+  
+  .header-upper-links a {
+    font-size: 13px;
+  }
+}
+
+/* ========================================
+   TABLET (768px - 991px)
+   ======================================== */
+@media (max-width: 991px) and (min-width: 768px) {
+  .container-xxl {
+    max-width: 720px;
+  }
+  
+  .section-heading {
+    font-size: 24px;
+    line-height: 32px;
+    margin-bottom: 25px;
+  }
+  
+  /* Header tablet */
+  .header-upper {
+    padding: 15px 0;
+  }
+  
+  .header-upper .input-group {
+    margin: 15px 0;
+  }
+  
+  .header-upper-links {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .header-bottom .menu-links {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .nav-dropdown-menu {
+    min-width: 180px;
+  }
+  
+  /* Home page tablet */
+  .home-wrapper-1,
+  .home-wrapper-2 {
+    padding: 40px 0;
+  }
+  
+  .main-banner-content h4 {
+    font-size: 18px;
+  }
+  
+  .main-banner-content h5 {
+    font-size: 16px;
+  }
+  
+  .small-banner {
+    width: 48%;
+    margin-bottom: 15px;
+  }
+  
+  .servies {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .servies .d-flex {
+    width: 48%;
+  }
+  
+  /* Product cards tablet */
+  .product-card {
+    margin-bottom: 20px;
+  }
+  
+  /* Footer tablet */
+  .footer-link {
+    margin-bottom: 25px;
+  }
+}
+
+/* ========================================
+   MOBILE LARGE (576px - 767px)
+   ======================================== */
+@media (max-width: 767px) and (min-width: 576px) {
+  .container-xxl {
+    max-width: 540px;
+  }
+  
+  .section-heading {
+    font-size: 22px;
+    line-height: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Header mobile large */
+  .header-top-strip {
+    text-align: center;
+    padding: 8px 0;
+  }
+  
+  .header-upper {
+    padding: 10px 0;
+  }
+  
+  .header-upper .row {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .header-upper .input-group {
+    width: 100%;
+  }
+  
+  .header-upper-links {
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .header-bottom {
+    position: relative;
+  }
+  
+  .menu-icon {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+  }
+  
+  .menu-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--color-232f3e);
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+  
+  .menu-links.show {
+    display: flex;
+  }
+  
+  .nav-dropdown-menu {
+    position: static;
+    box-shadow: none;
+    border: none;
+    background-color: var(--color-3b4149) !important;
+    margin-top: 10px;
+  }
+  
+  /* Home mobile large */
+  .home-wrapper-1,
+  .home-wrapper-2 {
+    padding: 30px 0;
+  }
+  
+  .main-banner-content {
+    padding: 0 20px;
+  }
+  
+  .main-banner-content h4 {
+    font-size: 16px;
+  }
+  
+  .main-banner-content h5 {
+    font-size: 14px;
+  }
+  
+  .small-banner {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .servies {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .servies .d-flex {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Store mobile large */
+  .store-wrapper .row {
+    flex-direction: column;
+  }
+  
+  .store-wrapper .col-3,
+  .store-wrapper .col-9 {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .filter-sort-grid {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start !important;
+  }
+  
+  /* Footer mobile large */
+  .footer-top-data {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .footer-link {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .social_icons {
+    justify-content: center;
+  }
+}
+
+/* ========================================
+   MOBILE (480px - 575px)
+   ======================================== */
+@media (max-width: 575px) and (min-width: 480px) {
+  .container-xxl {
+    padding: 0 15px;
+  }
+  
+  .section-heading {
+    font-size: 20px;
+    line-height: 26px;
+  }
+  
+  .card-wrapper {
+    padding: 12px;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+  
+  /* Header mobile */
+  .header-top-strip p {
+    font-size: 12px;
+  }
+  
+  .header-upper-links a {
+    font-size: 12px;
+  }
+  
+  .header-upper-links img {
+    width: 30px;
+    height: 30px;
+  }
+  
+  /* Home mobile */
+  .main-banner-content h4 {
+    font-size: 14px;
+  }
+  
+  .main-banner-content h5 {
+    font-size: 12px;
+  }
+  
+  .main-banner-content p {
+    font-size: 11px;
+  }
+  
+  .servies img {
+    width: 40px;
+  }
+  
+  .servies h6 {
+    font-size: 14px;
+  }
+  
+  .servies p {
+    font-size: 12px;
+  }
+}
+
+/* ========================================
+   MOBILE SMALL (320px - 479px)
+   ======================================== */
+@media (max-width: 479px) {
+  .container-xxl {
+    padding: 0 10px;
+  }
+  
+  .section-heading {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  
+  .card-wrapper {
+    padding: 10px;
+  }
+  
+  .button {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  
+  /* Header mobile small */
+  .header-top-strip {
+    padding: 5px 0;
+  }
+  
+  .header-top-strip p {
+    font-size: 11px;
+  }
+  
+  .header-upper {
+    padding: 8px 0;
+  }
+  
+  .header-upper-links {
+    gap: 10px;
+  }
+  
+  .header-upper-links a {
+    font-size: 11px;
+  }
+  
+  .header-upper-links img {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .menu-icon {
+    right: 10px;
+  }
+  
+  .menu-links {
+    padding: 15px;
+  }
+  
+  .nav-link-item {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+  
+  /* Home mobile small */
+  .home-wrapper-1,
+  .home-wrapper-2 {
+    padding: 20px 0;
+  }
+  
+  .main-banner-content {
+    padding: 0 15px;
+  }
+  
+  .main-banner-content h4 {
+    font-size: 12px;
+  }
+  
+  .main-banner-content h5 {
+    font-size: 11px;
+  }
+  
+  .main-banner-content p {
+    font-size: 10px;
+  }
+  
+  .servies img {
+    width: 35px;
+  }
+  
+  .servies h6 {
+    font-size: 12px;
+  }
+  
+  .servies p {
+    font-size: 11px;
+  }
+  
+  /* Footer mobile small */
+  .footer-top-data h2 {
+    font-size: 1.1rem;
+  }
+  
+  .footer-link h4 {
+    font-size: 14px;
+  }
+  
+  .footer-link a {
+    font-size: 12px;
+  }
+  
+  .social_icons a {
+    font-size: 1.2rem;
+  }
+  
+  .input-group input {
+    font-size: 12px;
+    padding: 8px;
+  }
+  
+  .input-group .input-group-text {
+    padding: 8px;
+    font-size: 12px;
+  }
+}
+
+/* ========================================
+   UTILITIES RESPONSIVE
+   ======================================== */
+
+/* Masquer/Afficher selon la taille d'écran */
+.d-desktop {
+  display: block;
+}
+
+.d-tablet {
+  display: none;
+}
+
+.d-mobile {
+  display: none;
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+  .d-desktop {
+    display: none;
+  }
+  
+  .d-tablet {
+    display: block;
+  }
+  
+  .d-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .d-desktop {
+    display: none;
+  }
+  
+  .d-tablet {
+    display: none;
+  }
+  
+  .d-mobile {
+    display: block;
+  }
+}
+
+/* Espacement responsive */
+@media (max-width: 767px) {
+  .gap-30 {
+    gap: 20px;
+  }
+  
+  .gap-15 {
+    gap: 10px;
+  }
+  
+  .gap-10 {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 479px) {
+  .gap-30 {
+    gap: 15px;
+  }
+  
+  .gap-15 {
+    gap: 8px;
+  }
+  
+  .gap-10 {
+    gap: 5px;
+  }
+}
+
+/* Texte responsive */
+.text-responsive {
+  font-size: 16px;
+}
+
+@media (max-width: 767px) {
+  .text-responsive {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 479px) {
+  .text-responsive {
+    font-size: 12px;
+  }
+}
+
+/* Boutons responsive */
+@media (max-width: 767px) {
+  .button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Images responsive */
+.img-responsive {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+/* Conteneurs responsive */
+.container-responsive {
+  width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+@media (min-width: 576px) {
+  .container-responsive {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container-responsive {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container-responsive {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container-responsive {
+    max-width: 1140px;
+  }
+}

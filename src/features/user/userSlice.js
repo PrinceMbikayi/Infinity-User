@@ -111,6 +111,17 @@ export const updateProfile = createAsyncThunk(
   }
 );
 
+export const uploadProfileImage = createAsyncThunk(
+  "user/profile/upload-image",
+  async (imageData, thunkAPI) => {
+    try {
+      return await authService.uploadProfileImage(imageData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const forgotPasswordToken = createAsyncThunk(
   "user/password/token",
   async (data,thunkAPI) => {
@@ -127,6 +138,17 @@ export const resetPassword = createAsyncThunk(
   async (data,thunkAPI) => {
     try {
       return await authService.resetPass(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getUserProfile = createAsyncThunk(
+  "user/profile/get",
+  async (_, thunkAPI) => {
+    try {
+      return await authService.getUserProfile();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -331,6 +353,24 @@ export const authSlice = createSlice({
         if (state.isSuccess===false) {
           toast.error("Something Went Wrong!")
         }
+      }).addCase(uploadProfileImage.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.isSuccess = false;
+      }).addCase(uploadProfileImage.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        // Mise à jour immédiate de l'état utilisateur
+        const updatedUser = { ...state.user, profileImage: action.payload.profileImage };
+        state.user = updatedUser;
+        // Mise à jour du localStorage avec les nouvelles données
+        localStorage.setItem("customer", JSON.stringify(updatedUser));
+      }).addCase(uploadProfileImage.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
       }).addCase(forgotPasswordToken.pending, (state) => {
         state.isLoading = true;
       }).addCase(forgotPasswordToken.fulfilled, (state, action) => {
@@ -366,10 +406,31 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
-        if (state.isSuccess===false) {
+        if (state.isError) {
           toast.error("Something Went Wrong!")
         }
-      })
+      }).addCase(getUserProfile.pending, (state) => {
+        state.isLoading = true;
+      }).addCase(getUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        if (action.payload?.getaUser) {
+          state.user = {
+            ...state.user,
+            ...action.payload.getaUser
+          };
+          localStorage.setItem("customer", JSON.stringify({
+            ...state.user,
+            ...action.payload.getaUser
+          }));
+        }
+      }).addCase(getUserProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      });
   },
 });
 

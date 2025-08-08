@@ -1,6 +1,6 @@
 import React from "react";
 import ReactStars from "react-rating-stars-component";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import prodcompare from "../images/prodcompare.svg";
 import wish from "../images/wish.svg";
 import wishlist from "../images/wishlist.svg";
@@ -15,6 +15,7 @@ const ProductCard = (props) => {
   const { grid, data } = props;
   let location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const addToWish = (id) => {
     dispatch(addToWishlist(id));
@@ -26,68 +27,135 @@ const ProductCard = (props) => {
         return (
           <div
             key={index}
-            className={` ${
-              location.pathname == "/product" ? `gr-${grid}` : "col-3"
-            } `}
+            className={`${
+              location.pathname === "/product" ? `gr-${grid}` : "col-lg-3 col-md-4 col-sm-6 col-12"
+            } mb-4`}
           >
-            <div
-              className="product-card position-relative"
-            >
-              <div className="wishlist-icon position-absolute">
-                <button className="border-0 bg-transparent">
-                  <img
-                    onClick={() => addToWish(item?._id)}
-                    src={wish}
-                    alt="wishlist"
-                  />
-                </button>
-              </div>
-              <div className="product-image">
+            <div className="product-card-modern group cursor-pointer">
+              {/* Product Image */}
+              <div className="product-card-image" onClick={() => navigate("/product/" + item?._id)}>
                 <img
-                  src={item?.images && item.images[0]?.url ? item.images[0].url : 'images/default.jpg'}
-                  className="img-fluid  mx-auto"
-                  alt="product image"
-                  width={250}
-                  height={250}
+                  src={
+                    item?.images && item.images[0]?.url
+                      ? item.images[0].url
+                      : "/images/default.jpg"
+                  }
+                  alt={item?.title || "Product"}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-                <img
-                  src={item?.images && item.images[1]?.url ? item.images[1].url : 'images/default.jpg'}
-                  className="img-fluid  mx-auto"
-                  alt="product image"
-                  width={250}
-                  height={250}
-                />
-              </div>
-              <div className="product-details">
-                <h6 className="brand">{item?.brand}</h6>
-                <h5 className="product-title">{item?.title}</h5>
-                <ReactStars
-                  count={5}
-                  size={24}
-                  value={item?.totalrating.toString()}
-                  edit={false}
-                  activeColor="#ffd700"
-                />
-                <p
-                  className={`description ${
-                    grid === 12 ? "d-block" : "d-none"
-                  }`}
-                  dangerouslySetInnerHTML={{ __html: item?.description }}
-                ></p>
-                <p className="price">$ {item?.price}</p>
-              </div>
-              <div className="action-bar position-absolute">
-                <div className="d-flex flex-column gap-15">
-                  {/* <button className="border-0 bg-transparent">
-                    <img src={prodcompare} alt="compare" />
-                  </button> */}
-                  <Link to={'/product/'+item?._id} className="border-0 bg-transparent">
-                    <img src={view} alt="view" />
+                
+                {/* Product Badge */}
+                {item?.tags && item.tags.includes('featured') && (
+                  <div className="product-badge featured">
+                    Vedette
+                  </div>
+                )}
+                {item?.tags && item.tags.includes('sale') && (
+                  <div className="product-badge sale">
+                    Promo
+                  </div>
+                )}
+                
+                {/* Product Actions */}
+                <div className="product-actions">
+                  <button 
+                    className="product-action-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToWish(item?._id);
+                    }}
+                    title="Ajouter aux favoris"
+                  >
+                    <img src={wish} alt="wishlist" className="w-4 h-4" />
+                  </button>
+                  <Link 
+                    to={"/product/" + item?._id}
+                    className="product-action-btn"
+                    title="Voir le produit"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img src={view} alt="view" className="w-4 h-4" />
                   </Link>
-                 {/*  <button className="border-0 bg-transparent">
-                    <img src={addcart} alt="addcart" />
-                  </button> */}
+                  <button 
+                    className="product-action-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // Add to compare functionality
+                    }}
+                    title="Comparer"
+                  >
+                    <img src={prodcompare} alt="compare" className="w-4 h-4" />
+                  </button>
                 </div>
+              </div>
+              
+              {/* Product Content */}
+              <div className="product-card-content" onClick={() => navigate("/product/" + item?._id)}>
+                {/* Brand */}
+                <div className="product-brand">
+                  {item?.brand}
+                </div>
+                
+                {/* Title */}
+                <h3 className="product-title">
+                  {item?.title}
+                </h3>
+                
+                {/* Rating */}
+                <div className="product-rating">
+                  <div className="product-stars">
+                    <ReactStars
+                      count={5}
+                      size={16}
+                      value={parseFloat(item?.totalrating) || 0}
+                      edit={false}
+                      activeColor="#FFA726"
+                      color="#E0E0E0"
+                    />
+                  </div>
+                  <span className="product-rating-text">
+                    ({item?.totalrating || 0})
+                  </span>
+                </div>
+                
+                {/* Description - Only show in list view */}
+                {grid === 12 && (
+                  <div 
+                    className="text-sm text-gray-600 mb-3 line-clamp-3"
+                    dangerouslySetInnerHTML={{ __html: item?.description }}
+                  />
+                )}
+                
+                {/* Price */}
+                <div className="product-price">
+                  <span className="product-price-current">
+                    €{item?.price}
+                  </span>
+                  {item?.originalPrice && item.originalPrice > item.price && (
+                    <>
+                      <span className="product-price-original">
+                        €{item.originalPrice}
+                      </span>
+                      <span className="product-discount">
+                        -{Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)}%
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+              
+              {/* Add to Cart Footer */}
+              <div className="product-card-footer">
+                <button 
+                  className="add-to-cart-btn btn-modern btn-primary w-full"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // Add to cart functionality
+                  }}
+                >
+                  <img src={addcart} alt="" className="w-4 h-4 mr-2" />
+                  Ajouter au panier
+                </button>
               </div>
             </div>
           </div>

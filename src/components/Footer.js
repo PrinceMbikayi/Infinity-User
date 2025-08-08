@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { BsLinkedin, BsGithub, BsYoutube, BsInstagram } from "react-icons/bs";
 import newsletter from "../images/newsletter.png";
+// import "./Footer.css";
 
 const Footer = () => {
   return (
@@ -39,7 +40,8 @@ const Footer = () => {
               <h4 className="text-white mb-4">Contact Us</h4>
               <div>
                 <address className="text-white fs-6">
-                  867, Boulevard Kanyamuhanga <br /> Les Volcans, Goma, DR Congo <br />
+                  867, Boulevard Kanyamuhanga <br /> Les Volcans, Goma, DR Congo{" "}
+                  <br />
                   PinCode: 16094
                 </address>
                 <a
@@ -71,49 +73,129 @@ const Footer = () => {
               </div>
             </div>
             <div className="col-3">
-              <h4 className="text-white mb-4">Information</h4>
+              <h4 className="text-white mb-4">Informations Légales</h4>
               <div className="footer-link d-flex flex-column">
                 <Link to="/privacy-policy" className="text-white py-2 mb-1">
-                  Privacy Policy
+                  Politique de Confidentialité
                 </Link>
                 <Link to="/refund-policy" className="text-white py-2 mb-1">
-                  Refund Policy
+                  Politique de Retour
                 </Link>
                 <Link to="/shipping-policy" className="text-white py-2 mb-1">
-                  Shipping Policy
+                  Politique de Livraison
                 </Link>
                 <Link to="/term-conditions" className="text-white py-2 mb-1">
-                  Terms & Conditions
+                  Conditions Générales
                 </Link>
-                <Link className="text-white py-2 mb-1">Blogs</Link>
-              </div>
-            </div>
-            <div className="col-3">
-              <h4 className="text-white mb-4">Account</h4>
-              <div className="footer-link d-flex flex-column">
-                <Link className="text-white py-2 mb-1">About Us</Link>
-                <Link className="text-white py-2 mb-1">Faq</Link>
-                <Link className="text-white py-2 mb-1">Contact</Link>
+                <Link to="/blogs" className="text-white py-2 mb-1">
+                  Blog
+                </Link>
               </div>
             </div>
             <div className="col-2">
-              <h4 className="text-white mb-4">Quick Links</h4>
+              <h4 className="text-white mb-4">Mon Compte</h4>
               <div className="footer-link d-flex flex-column">
-                <Link className="text-white py-2 mb-1">Laptops</Link>
-                <Link className="text-white py-2 mb-1">Headphones</Link>
-                <Link className="text-white py-2 mb-1">Tablets</Link>
-                <Link className="text-white py-2 mb-1">Watch</Link>
+                <Link to="/login" className="text-white py-2 mb-1">
+                  Connexion
+                </Link>
+                <Link to="/signup" className="text-white py-2 mb-1">
+                  Inscription
+                </Link>
+                <Link to="/my-profile" className="text-white py-2 mb-1">
+                  Mon Profil
+                </Link>
+                <Link to="/my-orders" className="text-white py-2 mb-1">
+                  Mes Commandes
+                </Link>
+                <Link to="/wishlist" className="text-white py-2 mb-1">
+                  Ma Liste de Souhaits
+                </Link>
+              </div>
+            </div>
+            <div className="col-2">
+              <h4 className="text-white mb-4">Support Client</h4>
+              <div className="footer-link d-flex flex-column">
+                <Link to="/faq" className="text-white py-2 mb-1">
+                  FAQ
+                </Link>
+                <Link to="/contact" className="text-white py-2 mb-1">
+                  Nous Contacter
+                </Link>
+                <Link to="/about" className="text-white py-2 mb-1">
+                  À Propos
+                </Link>
+                <a href="tel:+243902901951" className="text-white py-2 mb-1">
+                  Support Téléphonique
+                </a>
+                <a href="mailto:support@ritzglobal.org" className="text-white py-2 mb-1">
+                  Support Email
+                </a>
+              </div>
+            </div>
+            <div className="col-1">
+              <h4 className="text-white mb-4">Catégories</h4>
+              <div className="footer-link d-flex flex-column">
+                <Link to="/product?category=Ordinateurs" className="text-white py-2 mb-1">
+                  Ordinateurs
+                </Link>
+                <Link to="/product?category=Téléphones" className="text-white py-2 mb-1">
+                  Téléphones
+                </Link>
+                <Link to="/product?category=Tablettes" className="text-white py-2 mb-1">
+                  Tablettes
+                </Link>
+                <Link to="/product?category=Montres" className="text-white py-2 mb-1">
+                  Montres
+                </Link>
+                <Link to="/promotions" className="text-white py-2 mb-1">
+                  Promotions
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </footer>
+      
+      {/* Section méthodes de paiement et certifications */}
+      <footer className="py-3" style={{ backgroundColor: 'var(--color-3b4149)' }}>
+        <div className="container-xxl">
+          <div className="row align-items-center">
+            <div className="col-md-6">
+              <div className="payment-methods">
+                <h6 className="text-white mb-2">Méthodes de Paiement Sécurisées</h6>
+                <div className="d-flex align-items-center gap-15">
+                  <span className="text-white-50 fs-6">💳 Visa</span>
+                  <span className="text-white-50 fs-6">💳 MasterCard</span>
+                  <span className="text-white-50 fs-6">💳 PayPal</span>
+                  <span className="text-white-50 fs-6">🏦 Virement</span>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="certifications text-md-end">
+                <h6 className="text-white mb-2">Certifications & Sécurité</h6>
+                <div className="d-flex justify-content-md-end align-items-center gap-15">
+                  <span className="text-white-50 fs-6">🔒 SSL Sécurisé</span>
+                  <span className="text-white-50 fs-6">✅ Site Vérifié</span>
+                  <span className="text-white-50 fs-6">🛡️ Protection Acheteur</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+      
       <footer className="py-4">
         <div className="container-xxl">
           <div className="row">
-            <div className="col-12">
-              <p className="text-center mb-0 text-white">
-                &copy; {new Date().getFullYear()}; Powered by Ritz Global
+            <div className="col-md-6">
+              <p className="mb-0 text-white">
+                &copy; {new Date().getFullYear()} Ritz Global. Tous droits réservés.
+              </p>
+            </div>
+            <div className="col-md-6">
+              <p className="mb-0 text-white text-md-end">
+                Développé avec ❤️ pour une expérience e-commerce exceptionnelle
               </p>
             </div>
           </div>

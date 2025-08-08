@@ -69,6 +69,28 @@ const updateUser = async (data) => {
   }
 }
 
+const uploadProfileImage = async (imageData) => {
+  const formData = new FormData();
+  formData.append('image', imageData);
+  
+  const response = await axios.put(`${base_url}user/upload-profile-image`, formData, {
+    ...config,
+    headers: {
+      ...config.headers,
+      'Content-Type': 'multipart/form-data'
+    },
+    timeout: 30000, // 30 secondes timeout
+    onUploadProgress: (progressEvent) => {
+      const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+      console.log(`Upload progress: ${percentCompleted}%`);
+    }
+  });
+  
+  if (response.data) {
+    return response.data;
+  }
+}
+
 const forgotPassToken = async (data) => {
   const response = await axios.post(`${base_url}user/forgot-password-token`, data)
   if (response.data) {
@@ -77,9 +99,16 @@ const forgotPassToken = async (data) => {
 }
 
 const resetPass = async (data) => {
-  const response = await axios.put(`${base_url}user/reset-password/${data.token}`, {password:data?.password})
+  const response = await axios.put(`${base_url}user/reset-password/${data.token}`,{password:data?.password}, config);
   if (response.data) {
-    return response.data
+    return response.data;
+  }
+}
+
+const getUserProfile = async () => {
+  const response = await axios.get(`${base_url}user/profile`, config);
+  if (response.data) {
+    return response.data;
   }
 }
 
@@ -94,7 +123,9 @@ export const authService = {
   createOrder,
   getUserOrders,
   updateUser,
+  uploadProfileImage,
   forgotPassToken,
-  resetPass
-  
+  resetPass,
+  getUserProfile
+
 };

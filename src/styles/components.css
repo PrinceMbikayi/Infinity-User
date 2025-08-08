@@ -1,0 +1,648 @@
+/* ========================================
+   COMPOSANTS RESPONSIVE - INFINITY E-COMMERCE
+   ======================================== */
+
+/* ========================================
+   PRODUCT CARD RESPONSIVE
+   ======================================== */
+
+.product-card {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Desktop large (1200px+) */
+@media (min-width: 1200px) {
+  .product-card {
+    margin-bottom: 30px;
+  }
+  
+  .product-card .product-image {
+    height: 280px;
+    overflow: hidden;
+  }
+  
+  .product-card .product-details {
+    padding: 20px;
+  }
+  
+  .product-card .product-details h6 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .product-card .product-details p {
+    font-size: 14px;
+  }
+  
+  .product-card .product-price {
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
+
+/* Desktop (992px - 1199px) */
+@media (max-width: 1199px) and (min-width: 992px) {
+  .product-card {
+    margin-bottom: 25px;
+  }
+  
+  .product-card .product-image {
+    height: 260px;
+  }
+  
+  .product-card .product-details {
+    padding: 18px;
+  }
+  
+  .product-card .product-details h6 {
+    font-size: 15px;
+  }
+  
+  .product-card .product-price {
+    font-size: 17px;
+  }
+}
+
+/* Tablette (768px - 991px) */
+@media (max-width: 991px) and (min-width: 768px) {
+  .product-card {
+    margin-bottom: 20px;
+  }
+  
+  .product-card .product-image {
+    height: 240px;
+  }
+  
+  .product-card .product-details {
+    padding: 15px;
+  }
+  
+  .product-card .product-details h6 {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .product-card .product-details p {
+    font-size: 13px;
+  }
+  
+  .product-card .product-price {
+    font-size: 16px;
+  }
+}
+
+/* Mobile large (576px - 767px) */
+@media (max-width: 767px) and (min-width: 576px) {
+  .product-card {
+    margin-bottom: 18px;
+  }
+  
+  .product-card .product-image {
+    height: 220px;
+  }
+  
+  .product-card .product-details {
+    padding: 12px;
+  }
+  
+  .product-card .product-details h6 {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  
+  .product-card .product-details p {
+    font-size: 12px;
+  }
+  
+  .product-card .product-price {
+    font-size: 15px;
+  }
+}
+
+/* Mobile (480px - 575px) */
+@media (max-width: 575px) and (min-width: 480px) {
+  .product-card {
+    margin-bottom: 15px;
+  }
+  
+  .product-card .product-image {
+    height: 200px;
+  }
+  
+  .product-card .product-details {
+    padding: 10px;
+  }
+  
+  .product-card .product-details h6 {
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+  
+  .product-card .product-details p {
+    font-size: 11px;
+  }
+  
+  .product-card .product-price {
+    font-size: 14px;
+  }
+}
+
+/* Mobile petit (479px et moins) */
+@media (max-width: 479px) {
+  .product-card {
+    margin-bottom: 12px;
+  }
+  
+  .product-card .product-image {
+    height: 180px;
+  }
+  
+  .product-card .product-details {
+    padding: 8px;
+  }
+  
+  .product-card .product-details h6 {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  
+  .product-card .product-details p {
+    font-size: 10px;
+  }
+  
+  .product-card .product-price {
+    font-size: 13px;
+  }
+}
+
+/* ========================================
+   SPECIAL PRODUCT RESPONSIVE
+   ======================================== */
+
+.special-product {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.special-product:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Desktop large (1200px+) */
+@media (min-width: 1200px) {
+  .special-product {
+    padding: 25px;
+  }
+  
+  .special-product .special-product-content h5 {
+    font-size: 18px;
+  }
+  
+  .special-product .special-product-content h6 {
+    font-size: 16px;
+  }
+}
+
+/* Tablette et mobile */
+@media (max-width: 991px) {
+  .special-product {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .special-product .special-product-content {
+    text-align: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .special-product {
+    padding: 15px;
+  }
+  
+  .special-product .special-product-content h5 {
+    font-size: 16px;
+  }
+  
+  .special-product .special-product-content h6 {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 479px) {
+  .special-product {
+    padding: 12px;
+  }
+  
+  .special-product .special-product-content h5 {
+    font-size: 14px;
+  }
+  
+  .special-product .special-product-content h6 {
+    font-size: 12px;
+  }
+}
+
+/* ========================================
+   BLOG CARD RESPONSIVE
+   ======================================== */
+
+.blog-card {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.blog-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Desktop */
+@media (min-width: 992px) {
+  .blog-card .blog-image {
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .blog-card .blog-content {
+    padding: 20px;
+  }
+  
+  .blog-card .blog-content h5 {
+    font-size: 16px;
+  }
+}
+
+/* Tablette */
+@media (max-width: 991px) and (min-width: 768px) {
+  .blog-card .blog-image {
+    height: 180px;
+  }
+  
+  .blog-card .blog-content {
+    padding: 15px;
+  }
+  
+  .blog-card .blog-content h5 {
+    font-size: 15px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .blog-card .blog-image {
+    height: 160px;
+  }
+  
+  .blog-card .blog-content {
+    padding: 12px;
+  }
+  
+  .blog-card .blog-content h5 {
+    font-size: 14px;
+  }
+  
+  .blog-card .blog-content p {
+    font-size: 12px;
+  }
+}
+
+/* ========================================
+   BREADCRUMB RESPONSIVE
+   ======================================== */
+
+.breadcrumb-section {
+  padding: 20px 0;
+  background-color: var(--color-f5f5f7);
+}
+
+@media (max-width: 767px) {
+  .breadcrumb-section {
+    padding: 15px 0;
+  }
+  
+  .breadcrumb-section .breadcrumb {
+    font-size: 12px;
+  }
+  
+  .breadcrumb-section h2 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 479px) {
+  .breadcrumb-section {
+    padding: 10px 0;
+  }
+  
+  .breadcrumb-section .breadcrumb {
+    font-size: 11px;
+  }
+  
+  .breadcrumb-section h2 {
+    font-size: 18px;
+  }
+}
+
+/* ========================================
+   FORM RESPONSIVE
+   ======================================== */
+
+.form-control {
+  border-radius: 8px;
+  border: 1px solid var(--color-ededed);
+  padding: 12px 15px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--color-febd69);
+  box-shadow: 0 0 0 0.2rem rgba(254, 189, 105, 0.25);
+}
+
+@media (max-width: 767px) {
+  .form-control {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 479px) {
+  .form-control {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}
+
+/* ========================================
+   MODAL RESPONSIVE
+   ======================================== */
+
+.modal-content {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--color-ededed);
+  padding: 20px;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--color-ededed);
+  padding: 20px;
+}
+
+@media (max-width: 767px) {
+  .modal-dialog {
+    margin: 10px;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 15px;
+  }
+  
+  .modal-title {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 479px) {
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 12px;
+  }
+  
+  .modal-title {
+    font-size: 16px;
+  }
+}
+
+/* ========================================
+   PAGINATION RESPONSIVE
+   ======================================== */
+
+.pagination {
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.page-link {
+  color: var(--color-232f3e);
+  border: 1px solid var(--color-ededed);
+  padding: 10px 15px;
+  margin: 0 2px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.page-link:hover {
+  background-color: var(--color-febd69);
+  border-color: var(--color-febd69);
+  color: var(--color-131921);
+}
+
+.page-item.active .page-link {
+  background-color: var(--color-232f3e);
+  border-color: var(--color-232f3e);
+}
+
+@media (max-width: 767px) {
+  .pagination {
+    margin-top: 20px;
+  }
+  
+  .page-link {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 479px) {
+  .page-link {
+    padding: 6px 10px;
+    font-size: 12px;
+    margin: 0 1px;
+  }
+}
+
+/* ========================================
+   ALERT RESPONSIVE
+   ======================================== */
+
+.alert {
+  border-radius: 8px;
+  border: none;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+@media (max-width: 767px) {
+  .alert {
+    padding: 12px 15px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 479px) {
+  .alert {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+}
+
+/* ========================================
+   LOADING SPINNER RESPONSIVE
+   ======================================== */
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: var(--color-febd69);
+}
+
+@media (max-width: 767px) {
+  .loading-spinner {
+    padding: 30px;
+  }
+  
+  .spinner-border {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .loading-spinner {
+    padding: 20px;
+  }
+  
+  .spinner-border {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+/* ========================================
+   UTILITIES RESPONSIVE
+   ======================================== */
+
+/* Espacement responsive */
+.p-responsive {
+  padding: 20px;
+}
+
+.m-responsive {
+  margin: 20px;
+}
+
+@media (max-width: 767px) {
+  .p-responsive {
+    padding: 15px;
+  }
+  
+  .m-responsive {
+    margin: 15px;
+  }
+}
+
+@media (max-width: 479px) {
+  .p-responsive {
+    padding: 10px;
+  }
+  
+  .m-responsive {
+    margin: 10px;
+  }
+}
+
+/* Texte responsive */
+.text-responsive-lg {
+  font-size: 18px;
+}
+
+.text-responsive-md {
+  font-size: 16px;
+}
+
+.text-responsive-sm {
+  font-size: 14px;
+}
+
+@media (max-width: 767px) {
+  .text-responsive-lg {
+    font-size: 16px;
+  }
+  
+  .text-responsive-md {
+    font-size: 14px;
+  }
+  
+  .text-responsive-sm {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 479px) {
+  .text-responsive-lg {
+    font-size: 14px;
+  }
+  
+  .text-responsive-md {
+    font-size: 12px;
+  }
+  
+  .text-responsive-sm {
+    font-size: 11px;
+  }
+}

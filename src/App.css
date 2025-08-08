@@ -1,3 +1,7 @@
+/* Import Modern Design System */
+@import './styles/modern-design.css';
+@import './styles/modern-components.css';
+
 * {
   margin: 0;
   padding: 0;
@@ -14,7 +18,7 @@
   --color-777777: #777777;
   --color-1c1c1b: #1c1c1b;
 }
-.errors{
+.errors {
   color: red !important;
   font-size: 12px !important;
 }
@@ -57,10 +61,34 @@ a {
   font-size: 14px;
   padding: 13px 33px;
   border-radius: 25px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
 }
 .button:hover {
   background-color: var(--color-febd69);
   color: #131921;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive button styles */
+@media (max-width: 767px) {
+  .button {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 479px) {
+  .button {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
 }
 /* Header Part */
 
@@ -281,6 +309,7 @@ footer .input-group-text {
   border-radius: 10px;
   overflow: hidden;
   width: 100%;
+  cursor: pointer;
 }
 .product-card .product-image {
   height: 270px;
@@ -416,6 +445,59 @@ footer .input-group-text {
   height: 20px;
   background-color: red;
   border-radius: 50%;
+}
+
+/* Amazon-style color swatches */
+.amazon-color-options {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+
+.amazon-color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.amazon-color-swatch:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+}
+
+/* Styles pour les miniatures d'images */
+.amazon-thumbnail {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.amazon-thumbnail:hover {
+  border-color: #007185;
+}
+
+.amazon-thumbnail.active {
+  border-color: #007185;
+  box-shadow: 0 0 0 1px #007185;
+}
+
+/* Styles pour les informations de couleur sélectionnée */
+.amazon-selected-color-info {
+  margin-bottom: 10px;
+}
+
+.amazon-color-name {
+  font-size: 14px;
+  color: #565959;
+  font-weight: 500;
 }
 .random-products h5 {
   font-size: 14px;
