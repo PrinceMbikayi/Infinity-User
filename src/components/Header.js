@@ -5,6 +5,7 @@ import { BsSearch } from "react-icons/bs";
 import wishlist from "../images/wishlist.svg";
 import user from "../images/user.svg";
 import cart from "../images/cart.svg";
+import logo from "../images/logo-ritz-new.jpeg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Typeahead } from "react-bootstrap-typeahead";
@@ -66,8 +67,7 @@ const Header = () => {
                 {/* Logo */}
                 <div className="header-logo">
                   <Link to="/" className="logo-link">
-                    <span className="logo-text">RITZ</span>
-                    <span className="logo-accent">GLOBAL</span>
+                    <img src={logo} alt="Ritz Global" className="logo-image" />
                   </Link>
                 </div>
               </div>
